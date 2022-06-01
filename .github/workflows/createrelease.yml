@@ -17,7 +17,7 @@ jobs:
           dotnet-version: 5.0.x
 
       - name: Publish
-        run: dotnet publish .\WebApplication.sln -c Release -o ./public
+        run: dotnet publish ./src/WebApplication.sln -c Release -o ./public
 
       - name: Archive Release
         uses: thedoctor0/zip-release@main
