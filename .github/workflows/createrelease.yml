@@ -17,13 +17,13 @@ jobs:
           dotnet-version: 5.0.x
 
       - name: Publish
-        run: dotnet publish ./src/WebApplication.sln -c Release -o ./public
+        run: dotnet publish ./src/WebApplication.sln -c Release -o ../public
 
       - name: Archive Release
         uses: thedoctor0/zip-release@main
         with:
           type: 'zip'
-          directory: ./public
+          path: ./public
           filename: 'release.${{github.ref_name}}.zip'
 
       - name: Release
