@@ -24,10 +24,10 @@ jobs:
         with:
           type: 'zip'
           directory: ./public
-          filename: 'release.${{GITHUB_REF_NAME}}.zip'
+          filename: 'release.${{github.ref_name}}.zip'
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: release.${{GITHUB_REF_NAME}}.zip
+          files: release.${{github.ref_name}}.zip
