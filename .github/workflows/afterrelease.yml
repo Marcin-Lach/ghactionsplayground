@@ -1,7 +1,8 @@
 name: After release package
 
 on: 
-  release
+  release:
+    types: [created, published]
 
 jobs:
   build:
