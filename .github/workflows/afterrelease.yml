@@ -1,5 +1,8 @@
 name: After release package
 
+env:
+  develop_branch: "develop"
+
 on: 
   release:
     types: [published]
@@ -23,7 +26,7 @@ jobs:
             configuration: {
               version: "3.12",
               repo: "repo/John",
-              branch: "develop"
+              branch: $develop_branch
             }
           - customer: "Elie"
             configuration: {
@@ -35,7 +38,7 @@ jobs:
             configuration: {
               version: "3.9",
               repo: "repo/Doug",
-              branch: "develop"
+              branch: $develop_branch
             }
           - customer: "Zoe"
             configuration: {
