@@ -1,0 +1,26 @@
+name: After release package
+
+on: 
+  release
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: echo "$GITHUB_CONTEXT"
+
+      - name: Released 3.11
+        if: startsWith(${{ github.event.release.tag_name }}, '3.12')
+        run: echo "release 3.12"
+
+      - name: Released 3.11
+        if: startsWith(${{ github.event.release.tag_name }}, '3.11')
+        run: echo "release 3.11"
+
+      - name: Released 3.9
+        if: startsWith(${{ github.event.release.tag_name }}, '3.9')
+        run: echo "release 3.9"
+
