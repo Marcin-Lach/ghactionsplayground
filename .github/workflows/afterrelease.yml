@@ -13,15 +13,40 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: Released 3.12
-        if: ${{ startsWith(github.event.release.tag_name, '3.12') }}
-        run: echo "release 3.12"
+  tests:
+    needs: build
+    runs-on: ubuntu-latest
+    strategy: 
+      matrix:
+        customer: ["John", "Elie", "Doug", "Zoe"]
+        include:
+          - customer: "John"
+            configuration: {
+              version: "3.12",
+              repo: "repo/John",
+              branch: "develop"
+            }
+          - customer: "Elie"
+            configuration: {
+              version: "3.11",
+              repo: "repo/Elie",
+              branch: "release/1.23"
+            }
+          - customer: "Doug"
+            configuration: {
+              version: "3.9",
+              repo: "repo/Doug",
+              branch: "develop"
+            }
+          - customer: "Zoe"
+            configuration: {
+              version: "3.11",
+              repo: "repo/Zoe",
+              branch: "main"
+            }
 
-      - name: Released 3.11
-        if: ${{ startsWith(github.event.release.tag_name, '3.11') }}
-        run: echo "release 3.11"
-
-      - name: Released 3.9
-        if: ${{ startsWith(github.event.release.tag_name, '3.9') }} 
-        run: echo "release 3.9"
+    steps:
+      - name: Released ${{github.event.release.tag_name}}
+        if: ${{ startsWith(github.event.release.tag_name, matrix.configuration.version) }}
+        run: echo "release ${{github.event.release.tag_name}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}}"
 
