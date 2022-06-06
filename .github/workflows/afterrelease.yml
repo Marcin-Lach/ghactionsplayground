@@ -2,7 +2,7 @@ name: After release package
 
 on: 
   release:
-    types: [created, published]
+    types: [published]
 
 jobs:
   build:
@@ -13,15 +13,15 @@ jobs:
           GITHUB_CONTEXT: ${{ toJson(github) }}
         run: echo "$GITHUB_CONTEXT"
 
-      - name: Released 3.11
-        if: startsWith(${{ github.event.release.tag_name }}, '3.12')
+      - name: Released 3.12
+        if: ${{ startsWith(github.event.release.tag_name, '3.12') }}
         run: echo "release 3.12"
 
       - name: Released 3.11
-        if: startsWith(${{ github.event.release.tag_name }}, '3.11')
+        if: ${{ startsWith(github.event.release.tag_name, '3.11') }}
         run: echo "release 3.11"
 
       - name: Released 3.9
-        if: startsWith(${{ github.event.release.tag_name }}, '3.9')
+        if: ${{ startsWith(github.event.release.tag_name, '3.9') }} 
         run: echo "release 3.9"
 
