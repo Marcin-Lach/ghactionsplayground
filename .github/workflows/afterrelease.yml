@@ -2,6 +2,7 @@ name: After release package
 
 env:
   develop_branch: "develop"
+  release_tag: '"release_tag": ${{ github.event.release.tag_name }}'
 
 on: 
   release:
@@ -50,5 +51,5 @@ jobs:
     steps:
       - name: Released ${{github.event.release.tag_name}}
         if: ${{ startsWith(github.event.release.tag_name, matrix.configuration.version) }}
-        run: echo "release ${{github.event.release.tag_name}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}}"
+        run: echo "release ${{github.event.release.tag_name}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}} - params ${{ env.release_tag }}"
 
