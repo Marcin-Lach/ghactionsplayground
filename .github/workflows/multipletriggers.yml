@@ -6,8 +6,8 @@ on:
       release_name:
         description: Tag of Github release that you want to trigger this workflow for
         required: true
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
 
 jobs:
   build:
