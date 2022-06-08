@@ -92,4 +92,10 @@ jobs:
           tag_name: ${{ env.release_tag }}
           files: summary.txt
           token: ${{secrets.PAT}}
+      - name: Publish release # add check if all tests were executed successfully
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          tag_name: ${{ env.release_tag }}
+          token: ${{secrets.PAT}}
 
