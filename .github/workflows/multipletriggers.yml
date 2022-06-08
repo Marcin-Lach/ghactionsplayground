@@ -1,7 +1,7 @@
 name: Multiple triggers variable handling
 
 env:
-  release_tag: '"release_tag": ${{ env.tag }}'
+  release_tag: '"release_tag": ${env.tag}'
 
 on:
   workflow_dispatch:
