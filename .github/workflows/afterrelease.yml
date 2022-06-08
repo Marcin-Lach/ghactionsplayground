@@ -70,6 +70,9 @@ jobs:
             }
 
     steps:
+      - name: show release version
+        run: echo "release ${{ env.release_tag }}"
+
       - name: Released ${{env.release_tag}}
         if: ${{ startsWith(env.release_tag, matrix.configuration.version) }}
         run: echo "release ${{env.release_tag}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}} - params ${{ env.release_tag }}"
