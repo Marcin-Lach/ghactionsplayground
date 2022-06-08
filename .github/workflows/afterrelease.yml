@@ -1,27 +1,48 @@
 name: After release package
 
-env:
-  develop_branch: "develop"
-  release_tag: '"release_tag": ${{ github.event.release.tag_name }}'
-
 on: 
+  workflow_dispatch:
+    inputs:
+      release_name:
+        description: Tag of Github release that you want to trigger this workflow for
+        required: true
   release:
     types: [published]
 
 jobs:
-  build:
+  setReleaseVersion:
     runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.setOutput.outputs.tag }}
     steps:
-      - name: Dump GitHub context
-        env:
-          GITHUB_CONTEXT: ${{ toJson(github) }}
-        run: echo "$GITHUB_CONTEXT"
+      - name: tag_from_release
+        if: github.event.release
+        run: echo "release_tag=${{github.event.release.tag_name}}" >> $GITHUB_ENV
+      - name: tag_from_workflow_dispatch
+        if: github.event.inputs
+        run: echo "release_tag=${{github.event.inputs.release_name}}" >> $GITHUB_ENV
+      - name: set_output
+        id: setOutput
+        run: echo "::set-output name=tag::${{ env.release_tag }}"
+
+  # build:
+  #   runs-on: ubuntu-latest
+  #   needs: setReleaseVersion
+  #   steps:
+  #     - name: Dump GitHub context
+  #       env:
+  #         GITHUB_CONTEXT: ${{ toJson(github) }}
+  #       run: echo "$GITHUB_CONTEXT"
 
   tests:
-    needs: build
+    needs: setReleaseVersion
     runs-on: ubuntu-latest
+    env:
+      release_tag: ${{ needs.setReleaseVersion.outputs.tag }}
+
     strategy: 
       matrix:
+        customer: ["John", "Elie", "Doug", "Zoe"]
         include:
           - customer: "John"
             configuration: {
@@ -49,7 +70,7 @@ jobs:
             }
 
     steps:
-      - name: Released ${{github.event.release.tag_name}}
-        if: ${{ startsWith(github.event.release.tag_name, matrix.configuration.version) }}
-        run: echo "release ${{github.event.release.tag_name}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}} - params ${{ env.release_tag }}"
+      - name: Released ${{env.release_tag}}
+        if: ${{ startsWith(env.release_tag, matrix.configuration.version) }}
+        run: echo "release ${{env.release_tag}} for ${{matrix.customer}} on repo ${{matrix.configuration.repo}} branch ${{matrix.configuration.branch}} - params ${{ env.release_tag }}"
 
