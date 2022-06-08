@@ -25,15 +25,6 @@ jobs:
         id: setOutput
         run: echo "::set-output name=tag::${{ env.release_tag }}"
 
-  # build:
-  #   runs-on: ubuntu-latest
-  #   needs: setReleaseVersion
-  #   steps:
-  #     - name: Dump GitHub context
-  #       env:
-  #         GITHUB_CONTEXT: ${{ toJson(github) }}
-  #       run: echo "$GITHUB_CONTEXT"
-
   tests:
     needs: setReleaseVersion
     runs-on: ubuntu-latest
