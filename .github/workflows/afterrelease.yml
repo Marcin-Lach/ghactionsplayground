@@ -7,7 +7,7 @@ on:
         description: Tag of Github release that you want to trigger this workflow for
         required: true
   release:
-    types: [created]
+    types: [prereleased]
 
 jobs:
   setReleaseVersion:
@@ -95,7 +95,7 @@ jobs:
       - name: Publish release # add check if all tests were executed successfully
         uses: softprops/action-gh-release@v1
         with:
-          draft: false
+          prerelease: false
           tag_name: ${{ env.release_tag }}
           token: ${{secrets.PAT}}
 
