@@ -32,4 +32,5 @@ jobs:
         if: github.event.inputs
         run: echo "release_tag=${{github.event.inputs.release_name}}" >> $GITHUB_ENV
       - name: show_tag
-        run: echo "'release_tag' : ${{ env.release_tag }}"
+        run: |
+          echo "'release_tag' : ${{ env.release_tag }}"
