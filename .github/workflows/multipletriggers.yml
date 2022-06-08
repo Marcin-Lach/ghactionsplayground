@@ -1,8 +1,5 @@
 name: Multiple triggers variable handling
 
-env:
-  release_tag: '"release_tag": $env.tag'
-
 on:
   workflow_dispatch:
     inputs:
@@ -25,14 +22,14 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      tag: ${{ null }} #set in steps depending on triggering event
+      release_tag: ${{ null }} #set in steps depending on triggering event
 
     steps:
       - name: from_release
         if: github.event.release
-        run: echo "tag=${{github.event.release.tag_name}}" >> $GITHUB_ENV
+        run: echo "release_tag=${{github.event.release.tag_name}}" >> $GITHUB_ENV
       - name: from_workflow_dispatch
         if: github.event.inputs
-        run: echo "tag=${{github.event.inputs.release_name}}" >> $GITHUB_ENV
+        run: echo "release_tag=${{github.event.inputs.release_name}}" >> $GITHUB_ENV
       - name: show_tag
-        run: echo "${{ env.release_tag }}"
+        run: echo "'release_tag' : ${{ env.release_tag }}"
