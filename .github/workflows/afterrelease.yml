@@ -7,7 +7,7 @@ on:
         description: Tag of Github release that you want to trigger this workflow for
         required: true
   release:
-    types: [published]
+    types: [created]
 
 jobs:
   setReleaseVersion:
