@@ -1,0 +1,48 @@
+name: Output parameters used in other jobs
+
+on:
+  workflow_dispatch:
+    inputs:
+      db-size:
+        description: pick a number
+        required: true
+        type: choice
+        default: "1"
+        options:
+          - "1"
+          - "5"
+          - "10"
+
+jobs:
+  set-output-param:
+    runs-on: ubuntu-latest
+    outputs:
+      outputvalj: ${{ steps.set-params.outputs.outputval}}
+    steps:
+      - name: Set params based on input
+        id: set-params
+        shell: bash
+        run: |
+          echo -e "Input param is ${{ github.event.inputs.db-size }} \n"
+
+          if [ ${{ github.event.inputs.db-size }} = "1" ] then
+            echo "outputval=one" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ ${{ github.event.inputs.db-size }} = "5" ] then
+            echo "outputval=five" >> "$GITHUB_OUTPUT"
+          fi
+
+          if [ ${{ github.event.inputs.db-size }} = "10" ] then
+            echo "outputval=ten" >> "$GITHUB_OUTPUT"
+          fi
+
+
+  use-output-param:
+    runs-on: ubuntu-latest
+    needs: set-output-param
+    steps:
+      - name: display params
+        run: |
+          echo "output from other job is ${{ needs.set-output-param.outputs.outputvalj }}"
+
