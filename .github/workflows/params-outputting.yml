@@ -25,16 +25,18 @@ jobs:
         run: |
           echo -e "Input param is ${{ github.event.inputs.db-size }} \n"
 
-          if [ ${{ github.event.inputs.db-size }} = "1" ] then
+          if [ ${{ github.event.inputs.db-size }} = "1" ] 
+          then
             echo "outputval=one" >> "$GITHUB_OUTPUT"
-          fi
-
-          if [ ${{ github.event.inputs.db-size }} = "5" ] then
+          elif [ ${{ github.event.inputs.db-size }} = "5" ] 
+          then
             echo "outputval=five" >> "$GITHUB_OUTPUT"
-          fi
-
-          if [ ${{ github.event.inputs.db-size }} = "10" ] then
+          elif [ ${{ github.event.inputs.db-size }} = "10" ] 
+          then
             echo "outputval=ten" >> "$GITHUB_OUTPUT"
+          else
+            echo unexpected value
+            exit 2
           fi
 
 
