@@ -40,7 +40,7 @@ jobs:
           fi
 
           echo "outputval=$val" >> "$GITHUB_OUTPUT"
-          echo -e "$outputval has been set \n"
+          echo -e "$val has been set \n"
 
 
   use-output-param:
