@@ -39,6 +39,8 @@ jobs:
             exit 2
           fi
 
+          echo -e "$outputval has been set \n"
+
 
   use-output-param:
     runs-on: ubuntu-latest
