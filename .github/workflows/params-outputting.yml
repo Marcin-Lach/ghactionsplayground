@@ -17,29 +17,29 @@ jobs:
   set-output-param:
     runs-on: ubuntu-latest
     outputs:
-      outputvalj: ${{ steps.set-params.outputs.outputval}}
+      outputvalj: ${{ steps.set-output.outputs.outputval}}
     steps:
-      - name: Set params based on input
-        id: set-params
+      - name: Set output based on input
+        id: set-output
         shell: bash
         run: |
           echo -e "Input param is ${{ github.event.inputs.db-size }} \n"
 
           if [ ${{ github.event.inputs.db-size }} = "1" ] 
           then
-            outputval=one
+            val=one
           elif [ ${{ github.event.inputs.db-size }} = "5" ] 
           then
-            outputval=five
+            val=five
           elif [ ${{ github.event.inputs.db-size }} = "10" ] 
           then
-            outputval=ten
+            val=ten
           else
             echo unexpected value
             exit 2
           fi
 
-          echo "outputval=$outputval" >> "$GITHUB_OUTPUT"
+          echo "outputval=$val" >> "$GITHUB_OUTPUT"
           echo -e "$outputval has been set \n"
 
 
