@@ -1,0 +1,32 @@
+name: Arithmetic operation on input params
+
+on:
+  workflow_dispatch:
+    inputs:
+      db-size:
+        description: pick a number
+        required: true
+        type: choice
+        default: "1"
+        options:
+          - "1"
+          - "5"
+          - "10"
+
+jobs:
+  setup-db-size:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Increase db-size by 1
+      id: adjust-db-size
+      shell: bash
+      run: |
+        adjusteddbsize=$(( ${{ github.event.inputs.db-size }} + 1 ))
+        echo -e "Adjusted db-size is $adjusteddbsize \n"
+        echo "adjusteddbsize=$adjusteddbsize" >> "$GITHUB_OUTPUT"
+    - name: Use value from previous step
+      shell: bash
+      run: |
+        echo -e "${{ steps.adjust-db-size.outputs.adjusteddbsize }} is adjusted db-size from previous step"
+
+
