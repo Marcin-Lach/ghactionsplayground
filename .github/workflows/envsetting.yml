@@ -1,0 +1,29 @@
+name: Logic while setting env var based on input params
+
+on:
+  workflow_dispatch:
+    inputs:
+      db-size:
+        description: pick a number
+        required: true
+        type: choice
+        default: "1"
+        options:
+          - "1"
+          - "5"
+          - "another"
+      another-text:
+        description: another number
+        required: false
+        default: ""
+env:
+  DB_SIZE_ENV: ${{ github.event.inputs.db-size == 'another' && github.event.inputs.another-text || github.event.inputs.db-size }}
+
+jobs:
+  display-env:
+    runs-on: ubuntu-latest
+    steps:
+      - name: display
+        run: |
+          echo "Env var is $DB_SIZE_ENV"
+
