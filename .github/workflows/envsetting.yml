@@ -23,7 +23,6 @@ on:
         default: false
 env:
   DB_SIZE_ENV: ${{ github.event.inputs.db-size == 'another' && github.event.inputs.another-text || github.event.inputs.db-size || '6' }}
-  JOB_CONDITION: ${{ github.event.inputs.condition-for-job || 'true' }}
 
 jobs:
   display-env:
