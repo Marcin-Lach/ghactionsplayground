@@ -1,6 +1,8 @@
 name: Logic while setting env var based on input params
 
 on:
+  schedule:
+    - cron: 10,15,20,25,30 * * * 1 # Monday, every minute
   workflow_dispatch:
     inputs:
       db-size:
@@ -16,14 +18,29 @@ on:
         description: another number
         required: false
         default: ""
+      condition-for-job:
+        required: true
+        default: false
 env:
   DB_SIZE_ENV: ${{ github.event.inputs.db-size == 'another' && github.event.inputs.another-text || github.event.inputs.db-size }}
+  JOB_CONDITION: ${{ inputs.condition-for-job || 'true' }}
 
 jobs:
   display-env:
     runs-on: ubuntu-latest
     steps:
       - name: display
+        shell: pwsh
         run: |
-          echo "Env var is $DB_SIZE_ENV"
+          echo "Env var is $env.DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
+          echo "Job condition is $env.JOB_CONDITION" >> $env:JOB_CONDITION
+
+  conditional-job:
+    if: ${{ env.JOB_CONDITION == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        shell: pwsh
+        run: |
+          echo "success printing"
 
