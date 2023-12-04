@@ -33,7 +33,7 @@ jobs:
         shell: pwsh
         run: |
           echo "Env var is $env:DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
-          echo "Job condition is $env:JOB_CONDITION" >> $env:JOB_CONDITION
+          echo "Job condition is $env:JOB_CONDITION" >> $env:GITHUB_STEP_SUMMARY
 
   conditional-job:
     if: ${{ github.env.JOB_CONDITION == 'true' }}
