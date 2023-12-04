@@ -33,7 +33,22 @@ jobs:
         run: |
           echo "Env var is $env:DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
           echo "Job condition is $env:JOB_CONDITION" >> $env:GITHUB_STEP_SUMMARY
-          echo "$github"
+
+      - name: print-inputs
+        shell: pwsh
+        env:
+          INPUTS: ${{ toJSON(inputs) }}
+        run: |
+           "Running on branch: ``$env:GITHUB_REF``" >> $env:GITHUB_STEP_SUMMARY
+            "Name|Value" >> $env:GITHUB_STEP_SUMMARY
+            "---|---" >> $env:GITHUB_STEP_SUMMARY
+
+            $inputs = $env:INPUTS | ConvertFrom-Json
+            $inputs | Get-Member -MemberType NoteProperty | ForEach-Object {
+              $value = $inputs.($_.Name)
+              $mdValue = if ($null -eq $value -or ($value -is [string] -and -not $value)) { '_empty_' } else { "``$value``" }
+              "$($_.Name)|$mdValue" >> $env:GITHUB_STEP_SUMMARY
+            }
 
   conditional-job:
     if: inputs.condition-for-job == 'false'
