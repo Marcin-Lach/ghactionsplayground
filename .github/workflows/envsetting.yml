@@ -36,7 +36,7 @@ jobs:
           echo "Job condition is $env.JOB_CONDITION" >> $env:JOB_CONDITION
 
   conditional-job:
-    if: ${{ env.JOB_CONDITION == 'true' }}
+    if: ${{ github.env.JOB_CONDITION == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: print
