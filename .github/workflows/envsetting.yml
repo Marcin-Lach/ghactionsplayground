@@ -23,7 +23,7 @@ on:
         default: false
 env:
   DB_SIZE_ENV: ${{ github.event.inputs.db-size == 'another' && github.event.inputs.another-text || github.event.inputs.db-size }}
-  JOB_CONDITION: ${{ inputs.condition-for-job || 'true' }}
+  JOB_CONDITION: ${{ github.event.inputs.condition-for-job || 'true' }}
 
 jobs:
   display-env:
@@ -32,8 +32,8 @@ jobs:
       - name: display
         shell: pwsh
         run: |
-          echo "Env var is $env.DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
-          echo "Job condition is $env.JOB_CONDITION" >> $env:JOB_CONDITION
+          echo "Env var is $env:DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
+          echo "Job condition is $env:JOB_CONDITION" >> $env:JOB_CONDITION
 
   conditional-job:
     if: ${{ github.env.JOB_CONDITION == 'true' }}
