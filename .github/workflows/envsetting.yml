@@ -34,9 +34,10 @@ jobs:
         run: |
           echo "Env var is $env:DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
           echo "Job condition is $env:JOB_CONDITION" >> $env:GITHUB_STEP_SUMMARY
+          echo "$github"
 
   conditional-job:
-    if: ${{ env.JOB_CONDITION == 'true' }}
+    #if: ${{ env.JOB_CONDITION == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - name: print
