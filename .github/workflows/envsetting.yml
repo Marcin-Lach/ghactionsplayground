@@ -37,7 +37,7 @@ jobs:
           echo "$github"
 
   conditional-job:
-    if: github.env.JOB_CONDITION == 'true'
+    if: inputs.condition-for-job == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: print
