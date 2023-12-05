@@ -25,14 +25,31 @@ env:
   DB_SIZE_ENV: ${{ github.event.inputs.db-size == 'another' && github.event.inputs.another-text || github.event.inputs.db-size || '6' }}
 
 jobs:
+  fix-inputs:
+    runs-on: ubuntu-latest
+    outputs: 
+      db-size: ${{ github.event.inputs.db-size || steps.fix.outputs.db-size }}
+      another-text: ${{ github.event.inputs.another-text || steps.fix.outputs.another-text }}
+      condition-for-job: ${{ github.event.inputs.condition-for-job || steps.fix.outputs.condition-for-job }}
+    steps:
+      - name: fix
+        if: ${{ github.event_name == 'scheduled' }}
+        shell: pwsh
+        run: |
+          echo "db-size=7" >> "$GITHUB_OUTPUT"
+          echo "another-text=scheduled" >> "$GITHUB_OUTPUT"
+          echo "condition-for-job=false" >> "$GITHUB_OUTPUT"
+
   display-env:
     runs-on: ubuntu-latest
+    needs: [fix-inputs]
     steps:
       - name: display
         shell: pwsh
         run: |
-          echo "Env var is $env:DB_SIZE_ENV" >> $env:GITHUB_STEP_SUMMARY
-          echo "Job condition is $env:JOB_CONDITION" >> $env:GITHUB_STEP_SUMMARY
+          echo "Db-size is ${{ needs.fix-inputs.outputs.db-size }}" >> $env:GITHUB_STEP_SUMMARY
+          echo "Another text is ${{ needs.fix-inputs.outputs.another-text }}" >> $env:GITHUB_STEP_SUMMARY
+          echo "Job condition is ${{ needs.fix-inputs.outputs.condition-for-job }}" >> $env:GITHUB_STEP_SUMMARY
 
       - name: print-inputs
         shell: pwsh
@@ -51,7 +68,8 @@ jobs:
             }
 
   conditional-job:
-    if: inputs.condition-for-job == 'false'
+    needs: [fix-inputs]
+    if: needs.fix-inputs.outputs.condition-for-job == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: print
