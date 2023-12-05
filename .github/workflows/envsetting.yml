@@ -2,7 +2,7 @@ name: Logic while setting env var based on input params
 
 on:
   schedule:
-    - cron: '10,15,20,25,30 * * * 1' # Monday, every minute
+    - cron: '5,10,15,20,25,30,35,40,45,50,55 * * * 2' # Tuesday, every minute
   workflow_dispatch:
     inputs:
       db-size:
