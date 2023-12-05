@@ -50,6 +50,7 @@ jobs:
             echo "another-text=${{ inputs.another-text }}" >> "$env:GITHUB_OUTPUT"
             echo "condition-for-job=${{ inputs.condition-for-job }}" >> "$env:GITHUB_OUTPUT"
           }
+          echo $env:GITHUB_OUTPUT
 
   display-env:
     runs-on: ubuntu-latest
