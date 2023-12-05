@@ -46,9 +46,9 @@ jobs:
             echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
             echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
           } else {
-            echo "db-size=8" >> "$env:GITHUB_OUTPUT"
-            echo "another-text=not-schedule" >> "$env:GITHUB_OUTPUT"
-            echo "condition-for-job=true" >> "$env:GITHUB_OUTPUT"
+            echo "db-size=${{ inputs.db-size }}" >> "$env:GITHUB_OUTPUT"
+            echo "another-text=${{ inputs.another-text }}" >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=${{ inputs.condition-for-job }}" >> "$env:GITHUB_OUTPUT"
           }
 
   display-env:
@@ -87,5 +87,15 @@ jobs:
       - name: print
         shell: pwsh
         run: |
-          echo "success printing"
+          echo "false printing" >> $env:GITHUB_STEP_SUMMARY
+
+  conditional-job2:
+    needs: [align-inputs]
+    if: needs.align-inputs.outputs.condition-for-job == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - name: print
+        shell: pwsh
+        run: |
+          echo "true printing" >> $env:GITHUB_STEP_SUMMARY
 
