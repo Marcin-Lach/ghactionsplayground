@@ -33,24 +33,23 @@ jobs:
       condition-for-job: ${{ steps.fix.outputs.condition-for-job }}
     steps:
       - name: print-event_name
-        shell: bash
+        shell: pwsh
         run: 
           echo ${{ github.event_name }}
       - name: fix
         id: fix
-        shell: bash
+        shell: pwsh
         run: |
-          if [[ '${{ github.event_name }}' == 'schedule' ]]; then
-            echo "db-size=7" >> "$GITHUB_OUTPUT"
-            echo "another-text=schedule" >> "$GITHUB_OUTPUT"
-            echo "condition-for-job=false" >> "$GITHUB_OUTPUT"
-            exit 0
-          fi
-          
-          echo "db-size=8" >> "$GITHUB_OUTPUT"
-          echo "another-text=not-schedule" >> "$GITHUB_OUTPUT"
-          echo "condition-for-job=true" >> "$GITHUB_OUTPUT"
-                 
+          if ( "${{ github.event_name }}" -eq "schedule" ) 
+          {
+            echo "db-size=7" >> "$env:GITHUB_OUTPUT"
+            echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
+          } else {
+            echo "db-size=8" >> "$env:GITHUB_OUTPUT"
+            echo "another-text=not-schedule" >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=true" >> "$env:GITHUB_OUTPUT"
+          }
 
   display-env:
     runs-on: ubuntu-latest
