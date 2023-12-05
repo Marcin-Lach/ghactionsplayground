@@ -33,11 +33,11 @@ jobs:
       condition-for-job: ${{ github.event.inputs.condition-for-job || steps.fix.outputs.condition-for-job }}
     steps:
       - name: fix
-        if: ${{ github.event_name == 'scheduled' }}
+        if: ${{ github.event_name == 'schedule' }}
         shell: pwsh
         run: |
           echo "db-size=7" >> "$GITHUB_OUTPUT"
-          echo "another-text=scheduled" >> "$GITHUB_OUTPUT"
+          echo "another-text=schedule" >> "$GITHUB_OUTPUT"
           echo "condition-for-job=false" >> "$GITHUB_OUTPUT"
 
   display-env:
