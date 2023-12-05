@@ -36,9 +36,9 @@ jobs:
         if: ${{ github.event_name == 'schedule' }}
         shell: pwsh
         run: |
-          echo "db-size=7" >> "$GITHUB_OUTPUT"
-          echo "another-text=schedule" >> "$GITHUB_OUTPUT"
-          echo "condition-for-job=false" >> "$GITHUB_OUTPUT"
+          echo "db-size=7" >> "$env:GITHUB_OUTPUT"
+          echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
+          echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
 
   display-env:
     runs-on: ubuntu-latest
