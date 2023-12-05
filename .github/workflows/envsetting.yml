@@ -28,21 +28,27 @@ jobs:
   align-inputs:
     runs-on: ubuntu-latest
     outputs: 
-      db-size: ${{ github.event.inputs.db-size || steps.fix.outputs.db-size }}
-      another-text: ${{ github.event.inputs.another-text || steps.fix.outputs.another-text }}
-      condition-for-job: ${{ github.event.inputs.condition-for-job || steps.fix.outputs.condition-for-job }}
+      db-size: ${{ steps.fix.outputs.db-size }}
+      another-text: ${{ steps.fix.outputs.another-text }}
+      condition-for-job: ${{ steps.fix.outputs.condition-for-job }}
     steps:
       - name: print-event_name
         shell: pwsh
         run: 
           echo ${{ github.event_name }}
       - name: fix
-        if: ${{ github.event_name == 'schedule' }}
         shell: pwsh
         run: |
-          echo "db-size=7" >> "$env:GITHUB_OUTPUT"
-          echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
-          echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
+          if ( "${{ github.event.schedule }}" -eq "schedule" ) 
+          {
+            echo "db-size=7" >> "$env:GITHUB_OUTPUT"
+            echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
+          } else {
+            echo "db-size=8" >> "$env:GITHUB_OUTPUT"
+            echo "another-text=not-schedule" >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=true" >> "$env:GITHUB_OUTPUT"
+          }        
 
   display-env:
     runs-on: ubuntu-latest
@@ -51,10 +57,11 @@ jobs:
       - name: display
         shell: pwsh
         run: |
-          echo "Db-size is ${{ needs.align-inputs.outputs.db-size }}" >> $env:GITHUB_STEP_SUMMARY
-          echo "Another text is ${{ needs.align-inputs.outputs.another-text }}" >> $env:GITHUB_STEP_SUMMARY
-          echo "Job condition is ${{ needs.align-inputs.outputs.condition-for-job }}" >> $env:GITHUB_STEP_SUMMARY
-
+            echo "Db-size is ${{ needs.align-inputs.outputs.db-size }}" >> $env:GITHUB_STEP_SUMMARY
+            echo "Another text is ${{ needs.align-inputs.outputs.another-text }}" >> $env:GITHUB_STEP_SUMMARY
+            echo "Job condition is ${{ needs.align-inputs.outputs.condition-for-job }}" >> $env:GITHUB_STEP_SUMMARY
+          
+          
       - name: print-inputs
         shell: pwsh
         env:
