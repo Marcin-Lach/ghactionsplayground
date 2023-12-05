@@ -32,6 +32,10 @@ jobs:
       another-text: ${{ github.event.inputs.another-text || steps.fix.outputs.another-text }}
       condition-for-job: ${{ github.event.inputs.condition-for-job || steps.fix.outputs.condition-for-job }}
     steps:
+      - name: print-event_name
+        shell: pwsh
+        run: 
+          echo ${{ github.event_name }}
       - name: fix
         if: ${{ github.event_name == 'schedule' }}
         shell: pwsh
