@@ -37,6 +37,7 @@ jobs:
         run: 
           echo ${{ github.event_name }}
       - name: fix
+        id: fix
         shell: bash
         run: |
           if [[ '${{ github.event_name }}' == 'schedule' ]]; then
