@@ -2,7 +2,7 @@ name: Logic while setting env var based on input params
 
 on:
   schedule:
-    - cron: '5,10,15,20,25,30,35,40,45,50,55 * * * 2' # Tuesday, every minute
+    - cron: '5,10,15,20,25,30,35,40,45,50,55 * * * 2,3' # Tuesday, every minute
   workflow_dispatch:
     inputs:
       db-size:
@@ -36,11 +36,12 @@ jobs:
         shell: pwsh
         run: 
           echo ${{ github.event_name }}
+
       - name: fix
         id: fix
         shell: pwsh
         run: |
-          if ( "${{ github.event_name }}" -eq "schedule" ) 
+          if ("${{ github.event_name }}" -eq "schedule") 
           {
             echo "db-size=7" >> "$env:GITHUB_OUTPUT"
             echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
