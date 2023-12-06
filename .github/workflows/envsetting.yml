@@ -43,13 +43,13 @@ jobs:
         run: |
           if ("${{ github.event_name }}" -eq "schedule") 
           {
-            echo "db-size=7" >> "$env:GITHUB_OUTPUT"
-            echo "another-text=schedule" >> "$env:GITHUB_OUTPUT"
-            echo "condition-for-job=false" >> "$env:GITHUB_OUTPUT"
+            echo "db-size=7"                >> "$env:GITHUB_OUTPUT"
+            echo "another-text=schedule"    >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=false"  >> "$env:GITHUB_OUTPUT"
           } else {
-            echo "db-size=${{ inputs.db-size }}" >> "$env:GITHUB_OUTPUT"
-            echo "another-text=${{ inputs.another-text }}" >> "$env:GITHUB_OUTPUT"
-            echo "condition-for-job=${{ inputs.condition-for-job }}" >> "$env:GITHUB_OUTPUT"
+            echo "db-size=${{ inputs.db-size }}"                      >> "$env:GITHUB_OUTPUT"
+            echo "another-text=${{ inputs.another-text }}"            >> "$env:GITHUB_OUTPUT"
+            echo "condition-for-job=${{ inputs.condition-for-job }}"  >> "$env:GITHUB_OUTPUT"
           }
           echo $env:GITHUB_OUTPUT
 
@@ -60,8 +60,8 @@ jobs:
       - name: display
         shell: pwsh
         run: |
-            echo "Db-size is ${{ needs.align-inputs.outputs.db-size }}" >> $env:GITHUB_STEP_SUMMARY
-            echo "Another text is ${{ needs.align-inputs.outputs.another-text }}" >> $env:GITHUB_STEP_SUMMARY
+            echo "Db-size is ${{ needs.align-inputs.outputs.db-size }}"                 >> $env:GITHUB_STEP_SUMMARY
+            echo "Another text is ${{ needs.align-inputs.outputs.another-text }}"       >> $env:GITHUB_STEP_SUMMARY
             echo "Job condition is ${{ needs.align-inputs.outputs.condition-for-job }}" >> $env:GITHUB_STEP_SUMMARY
           
           
